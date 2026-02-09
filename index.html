@@ -132,29 +132,37 @@ I’ll just be the one who’s always there, supporting you.
   })();
 
   function respond(answer) {
-    const response = document.getElementById('response');
-    const signature = document.querySelector('.signature');
+  const response = document.getElementById('response');
+  const signature = document.querySelector('.signature');
 
-    // prevent duplicate emails
-    if (localStorage.getItem('emailSent')) return;
+  // Clear previous text to avoid wrong dialogue flash
+  response.innerText = '';
 
-    localStorage.setItem('valentineAnswer', answer);
+  // Save answer
+  localStorage.setItem('valentineAnswer', answer);
 
-    if (answer === 'yes') {
-      response.innerText = "i'm glad that you accept my delight. i won't miss this chance, i promise you. <33";
-    } else if (answer === 'maybe') {
-      response.innerText = "don't worry, it's okay. i have no intention to pressure you anyway. thanks for giving this a time. ;))";
-    } else {
-      response.innerText = "that's okay, atleast you try to find time to this. it hurts, but i'll be happy to whatever you chose. :))";
-    }
+  // Correct dialogues per option
+  if (answer === 'yes') {
+    response.innerText = "i'm glad that you accept my delight. i won't miss this chance, i promise you. <33";
+  } else if (answer === 'maybe') {
+    response.innerText = "don't worry, it's okay. i have no intention to pressure you anyway. thanks for giving this a time. ;))";
+  } else if (answer === 'no') {
+    response.innerText = "that's okay, atleast you try to find time to this. it hurts, but i'll be happy to whatever you chose. :))";
+  }
 
-    signature.style.display = 'block';
-    signature.classList.add('fade-in');
+  signature.style.display = 'block';
+  signature.classList.add('fade-in');
 
-    emailjs.send('service_09s7zhu', 'template_6786d8w', {
+  // Send email ONLY once
+  if (!localStorage.getItem('emailSent')) {
+    emailjs.send('YOUR_SERVICE_ID', 'template_6786d8w', {
       to_email: 'delacruzrevi@gmail.com',
       answer: answer
+    }).then(() => {
+      localStorage.setItem('emailSent', 'true');
     }).catch(err => console.error(err));
+  }
+}
   }
 
   window.onload = () => {
@@ -164,12 +172,6 @@ I’ll just be the one who’s always there, supporting you.
     // do nothing visually on load
   }
 };
-</script>
-</body>
-</html>
-
-
-  };
 </script>
 </body>
 </html>
