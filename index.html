@@ -135,6 +135,9 @@ I’ll just be the one who’s always there, supporting you.
     const response = document.getElementById('response');
     const signature = document.querySelector('.signature');
 
+    // prevent duplicate emails
+    if (localStorage.getItem('emailSent')) return;
+
     localStorage.setItem('valentineAnswer', answer);
 
     if (answer === 'yes') {
@@ -148,19 +151,23 @@ I’ll just be the one who’s always there, supporting you.
     signature.style.display = 'block';
     signature.classList.add('fade-in');
 
-    emailjs.send('service_x9abcd', 'template_6786d8w', {
+    emailjs.send('service_09s7zhu', 'template_6786d8w', {
       to_email: 'delacruzrevi@gmail.com',
       answer: answer
     }).catch(err => console.error(err));
   }
 
   window.onload = () => {
-    const saved = localStorage.getItem('valentineAnswer');
-    if (saved) respond(saved);
-  };
+  // Only restore saved answer silently (do not show response or send email)
+  const saved = localStorage.getItem('valentineAnswer');
+  if (saved) {
+    // do nothing visually on load
+  }
+};
 </script>
 </body>
 </html>
+
 
   };
 </script>
